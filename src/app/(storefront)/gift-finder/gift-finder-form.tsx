@@ -8,7 +8,7 @@ import {
   type GiftMatchCriteria,
   type GiftMatchResult,
 } from '@/domain/feedback';
-import { seedProducts } from '@/data/seed-products';
+import { useProducts } from '@/hooks/use-data';
 import { matchProducts } from '@/domain/gift-matcher';
 import { generateReferenceNumber, generateIdempotencyKey } from '@/domain/reference';
 import { formatPrice } from '@/lib/format';
@@ -129,6 +129,7 @@ function validate(data: FormData): FormErrors {
 /* ------------------------------------------------------------------ */
 
 export function GiftFinderForm() {
+  const { data: products } = useProducts();
   const [form, setForm] = useState<FormData>({
     occasion: '',
     recipientGroup: '',
@@ -228,7 +229,7 @@ export function GiftFinderForm() {
         sustainabilityPreference: form.sustainabilityPreference || undefined,
         recipientGroup: form.recipientGroup || undefined,
       };
-      const matches = matchProducts(seedProducts, criteria, 4);
+      const matches = matchProducts(products, criteria, 4);
       setMatchedProducts(matches);
 
       setSubmitted(true);

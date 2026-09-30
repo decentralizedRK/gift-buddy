@@ -1,13 +1,23 @@
 'use client';
 
-import { useState } from 'react';
-import { seedCategories } from '@/data/seed-categories';
+import { useState, useEffect } from 'react';
+import { useCategories } from '@/hooks/use-data';
+import { LoadingState } from '@/components/LoadingState';
 import { formatDate } from '@/lib/format';
 
 export default function CategoriesPage() {
+  const { data: rawCategories, loading } = useCategories();
   const [categories, setCategories] = useState(
-    seedCategories.map((c) => ({ ...c, status: c.status as 'active' | 'archived' }))
+    rawCategories.map((c) => ({ ...c, status: c.status as 'active' | 'archived' }))
   );
+
+  useEffect(() => {
+    setCategories(
+      rawCategories.map((c) => ({ ...c, status: c.status as 'active' | 'archived' }))
+    );
+  }, [rawCategories]);
+
+  if (loading) return <LoadingState />;
 
   function toggleStatus(id: string) {
     setCategories((prev) =>

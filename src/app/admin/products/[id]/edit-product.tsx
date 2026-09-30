@@ -2,7 +2,8 @@
 
 import { use } from 'react';
 import Link from 'next/link';
-import { seedProducts } from '@/data/seed-products';
+import { useProduct } from '@/hooks/use-data';
+import { LoadingState } from '@/components/LoadingState';
 import { ProductForm } from '../new/page';
 
 export default function EditProductPage({
@@ -11,7 +12,9 @@ export default function EditProductPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const product = seedProducts.find((p) => p.id === id);
+  const { data: product, loading } = useProduct(id);
+
+  if (loading) return <LoadingState />;
 
   if (!product) {
     return (

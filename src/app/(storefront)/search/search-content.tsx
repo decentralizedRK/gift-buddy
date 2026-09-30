@@ -2,18 +2,20 @@
 
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { seedProducts } from '@/data/seed-products';
+import { useProducts } from '@/hooks/use-data';
 import { ProductCard } from '@/components/storefront/ProductCard';
+import { LoadingState } from '@/components/LoadingState';
 
 export function SearchContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get('q') ?? '';
   const [query, setQuery] = useState(initialQuery);
+  const { data: allProducts, loading } = useProducts();
 
   const results = useMemo(() => {
     if (!query.trim()) return [];
     const lowerQuery = query.toLowerCase().trim();
-    return seedProducts.filter((product) => {
+    return allProducts.filter((product) => {
       if (product.status !== 'active') return false;
       const titleMatch = product.title.toLowerCase().includes(lowerQuery);
       const descMatch = product.shortDescription.toLowerCase().includes(lowerQuery);
@@ -24,7 +26,9 @@ export function SearchContent() {
       const categoryMatch = product.category.toLowerCase().includes(lowerQuery);
       return titleMatch || descMatch || tagMatch || occasionMatch || categoryMatch;
     });
-  }, [query]);
+  }, [query, allProducts]);
+
+  if (loading) return <LoadingState />;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

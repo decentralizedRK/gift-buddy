@@ -2,10 +2,9 @@
 
 import { use, useState } from 'react';
 import Link from 'next/link';
-import { seedFeedback, type SeedFeedback } from '@/data/seed-feedback';
-import { seedRecommendationRequests, type SeedRecommendationRequest } from '@/data/seed-feedback';
-
-
+import { useFeedbackItem, useRecommendation } from '@/hooks/use-data';
+import { LoadingState } from '@/components/LoadingState';
+import type { SeedFeedback, SeedRecommendationRequest } from '@/data/seed-feedback';
 import {
   FEEDBACK_TYPES,
   VALID_FEEDBACK_TRANSITIONS,
@@ -116,12 +115,11 @@ export default function FeedbackDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
+  const { data: feedbackItem, loading: fLoading } = useFeedbackItem(id);
+  const { data: recommendationItem, loading: rLoading } = useRecommendation(id);
 
-  // Look up from both seed collections
-  const feedbackItem = seedFeedback.find((fb) => fb.id === id);
-  const recommendationItem = seedRecommendationRequests.find((r) => r.id === id);
+  if (fLoading || rLoading) return <LoadingState />;
 
-  // If it's a recommendation request, show a simpler view
   if (recommendationItem) {
     return <RecommendationDetailView item={recommendationItem} />;
   }

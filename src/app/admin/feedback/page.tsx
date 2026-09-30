@@ -2,8 +2,9 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { seedFeedback } from '@/data/seed-feedback';
-import { seedRecommendationRequests } from '@/data/seed-feedback';
+import { useFeedbackItems, useRecommendations } from '@/hooks/use-data';
+import { LoadingState } from '@/components/LoadingState';
+import type { SeedFeedback } from '@/data/seed-feedback';
 import {
   FEEDBACK_TYPES,
   sanitizeCsvValue,
@@ -64,7 +65,7 @@ function renderStars(rating?: number): React.ReactNode {
 
 /* CSV Export ---------------------------------------------------------------- */
 
-function exportFeedbackCsv() {
+function exportFeedbackCsv(feedbackData: SeedFeedback[]) {
   const headers = [
     'Reference',
     'Type',
@@ -83,7 +84,7 @@ function exportFeedbackCsv() {
     'Created',
   ];
 
-  const rows = seedFeedback.map((fb) => [
+  const rows = feedbackData.map((fb) => [
     sanitizeCsvValue(fb.publicReference),
     sanitizeCsvValue(FEEDBACK_TYPES[fb.type] ?? fb.type),
     sanitizeCsvValue(statusLabel(fb.category)),
@@ -122,6 +123,8 @@ function exportFeedbackCsv() {
 type Tab = 'feedback' | 'recommendations';
 
 export default function FeedbackListPage() {
+  const { data: allFeedback, loading: fLoading } = useFeedbackItems();
+  const { data: allRecommendations, loading: rLoading } = useRecommendations();
   const [activeTab, setActiveTab] = useState<Tab>('feedback');
   const [statusFilter, setStatusFilter] = useState<string>('');
   const [priorityFilter, setPriorityFilter] = useState<string>('');
@@ -132,7 +135,7 @@ export default function FeedbackListPage() {
 
   /* Filtered feedback */
   const filteredFeedback = useMemo(() => {
-    let items = [...seedFeedback];
+    let items = [...allFeedback];
     if (statusFilter) items = items.filter((fb) => fb.status === statusFilter);
     if (priorityFilter) items = items.filter((fb) => fb.priority === priorityFilter);
     if (categoryFilter) items = items.filter((fb) => fb.category === categoryFilter);
@@ -148,11 +151,11 @@ export default function FeedbackListPage() {
       );
     }
     return items;
-  }, [statusFilter, priorityFilter, categoryFilter, typeFilter, sentimentFilter, search]);
+  }, [allFeedback, statusFilter, priorityFilter, categoryFilter, typeFilter, sentimentFilter, search]);
 
   /* Filtered recommendations */
   const filteredRecommendations = useMemo(() => {
-    let items = [...seedRecommendationRequests];
+    let items = [...allRecommendations];
     if (statusFilter) items = items.filter((r) => r.status === statusFilter);
     if (priorityFilter) items = items.filter((r) => r.priority === priorityFilter);
     if (search) {
@@ -165,7 +168,9 @@ export default function FeedbackListPage() {
       );
     }
     return items;
-  }, [statusFilter, priorityFilter, search]);
+  }, [allRecommendations, statusFilter, priorityFilter, search]);
+
+  if (fLoading || rLoading) return <LoadingState />;
 
   const resultCount =
     activeTab === 'feedback' ? filteredFeedback.length : filteredRecommendations.length;
@@ -182,7 +187,7 @@ export default function FeedbackListPage() {
         </div>
         <button
           type="button"
-          onClick={exportFeedbackCsv}
+          onClick={() => exportFeedbackCsv(allFeedback)}
           className="inline-flex items-center rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
         >
           <svg

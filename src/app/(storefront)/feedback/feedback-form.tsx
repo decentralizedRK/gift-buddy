@@ -11,7 +11,7 @@ import {
   type BudgetRange,
   type QuantityRange,
 } from '@/domain/feedback';
-import { seedProducts } from '@/data/seed-products';
+import { useProducts } from '@/hooks/use-data';
 import { generateReferenceNumber, generateIdempotencyKey } from '@/domain/reference';
 
 /* ------------------------------------------------------------------ */
@@ -171,12 +171,12 @@ function StarRating({
 
 export function FeedbackForm() {
   const searchParams = useSearchParams();
+  const { data: products } = useProducts();
 
   const initialType = (searchParams.get('type') as FeedbackType) || 'general_feedback';
   const initialProduct = searchParams.get('product') || '';
-  // Resolve product ID from slug if provided
   const resolvedProductId = initialProduct
-    ? seedProducts.find((p) => p.slug === initialProduct || p.id === initialProduct)?.id || ''
+    ? products.find((p) => p.slug === initialProduct || p.id === initialProduct)?.id || ''
     : '';
 
   const [form, setForm] = useState<FormData>({
@@ -400,7 +400,7 @@ export function FeedbackForm() {
                 className={inputClasses()}
               >
                 <option value="">Select a product (optional)</option>
-                {seedProducts.map((p) => (
+                {products.map((p) => (
                   <option key={p.id} value={p.id}>
                     {p.title}
                   </option>

@@ -1,13 +1,23 @@
 'use client';
 
-import { useState } from 'react';
-import { seedCollections } from '@/data/seed-collections';
+import { useState, useEffect } from 'react';
+import { useCollections } from '@/hooks/use-data';
+import { LoadingState } from '@/components/LoadingState';
 import { formatDate } from '@/lib/format';
 
 export default function CollectionsPage() {
+  const { data: rawCollections, loading } = useCollections();
   const [collections, setCollections] = useState(
-    seedCollections.map((c) => ({ ...c, status: c.status as 'active' | 'archived' }))
+    rawCollections.map((c) => ({ ...c, status: c.status as 'active' | 'archived' }))
   );
+
+  useEffect(() => {
+    setCollections(
+      rawCollections.map((c) => ({ ...c, status: c.status as 'active' | 'archived' }))
+    );
+  }, [rawCollections]);
+
+  if (loading) return <LoadingState />;
 
   function toggleStatus(id: string) {
     setCollections((prev) =>
