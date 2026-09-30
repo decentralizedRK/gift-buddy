@@ -346,6 +346,131 @@ Supported delivery regions.
 
 ---
 
+## Collection: `feedbackSubmissions`
+
+Customer feedback and suggestions.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| id | string | auto | Document ID |
+| publicReference | string | yes | Non-sequential reference (e.g., GB-FB7K3N) |
+| type | enum | yes | One of 12 feedback types |
+| category | enum | yes | Classification category |
+| title | string | yes | Feedback title (max 200) |
+| message | string | yes | Detailed feedback (max 5000) |
+| rating | number | no | 1–5 star rating |
+| relatedProductId | string | no | Product reference |
+| relatedProductSnapshot | object | no | Product ID, SKU, title, slug at submission time |
+| suggestedItems | string[] | no | Customer-suggested items |
+| occasion | string | no | Related occasion |
+| budgetRange | enum | no | Budget band |
+| quantityRange | enum | no | Quantity band |
+| companyName | string | no | Company name |
+| contactName | string | no | Contact person |
+| email | string | no | Email address (PII) |
+| phone | string | no | Phone number (PII) |
+| anonymous | boolean | yes | True if no identity provided |
+| contactRequested | boolean | yes | True if customer wants response |
+| consent | boolean | yes | Contact consent given |
+| status | enum | yes | Lifecycle status |
+| priority | enum | yes | low, normal, high, urgent |
+| sentiment | enum | yes | Owner-classified sentiment |
+| tags | string[] | no | Classification tags |
+| duplicateOf | string | no | Reference to duplicate original |
+| source | string | yes | Submission source (web_form, product_page) |
+| idempotencyKeyHash | string | yes | Hash of idempotency key |
+| isDemoData | boolean | no | True for seed data |
+| createdAt | timestamp | auto | Server timestamp |
+| updatedAt | timestamp | auto | Server timestamp |
+| assignedTo | string | no | Admin user ID |
+
+**Access Rules:** Public create (restricted fields). Admin read/update/delete.
+
+**PII:** contactName, email, phone, companyName. Subject to retention and deletion policy.
+
+### Subcollection: `feedbackSubmissions/{feedbackId}/events`
+
+Immutable audit trail for feedback status changes.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| id | string | auto | Document ID |
+| feedbackId | string | yes | Parent feedback ID |
+| previousStatus | enum | yes | Status before change |
+| newStatus | enum | yes | Status after change |
+| actor | string | yes | Admin user ID |
+| source | string | yes | admin, system |
+| reason | string | no | Reason for change |
+| internalNote | string | no | Private admin note |
+| timestamp | timestamp | auto | Server timestamp |
+
+**Access Rules:** Admin read and create only. No update or delete (immutable).
+
+---
+
+## Collection: `recommendationRequests`
+
+Gift-finder / "Help me choose" submissions.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| id | string | auto | Document ID |
+| publicReference | string | yes | Non-sequential reference |
+| occasion | string | yes | Gift occasion |
+| recipientGroup | string | yes | Description of recipients |
+| numberOfRecipients | number | yes | Recipient count |
+| budgetPerRecipient | enum | yes | Budget band per person |
+| totalBudgetApprox | string | no | Estimated total |
+| requiredDate | string | no | Desired delivery date |
+| deliveryCityOrRegion | string | no | Delivery location |
+| dietaryPreferences | string[] | no | Dietary requirements |
+| sustainabilityPreference | boolean | no | Eco-friendly preference |
+| personalizationRequired | boolean | no | Needs personalization |
+| brandingRequired | boolean | no | Needs company branding |
+| preferredCategories | string[] | no | Preferred product categories |
+| productsToAvoid | string | no | Items to exclude |
+| additionalNotes | string | no | Free-text notes |
+| companyName | string | yes | Company name |
+| contactName | string | yes | Contact person |
+| email | string | yes | Email (PII) |
+| phone | string | no | Phone (PII) |
+| consent | boolean | yes | Must be true |
+| status | enum | yes | Lifecycle status |
+| priority | enum | yes | Priority level |
+| matchedProductIds | string[] | no | Matched product IDs |
+| source | string | yes | gift_finder |
+| idempotencyKeyHash | string | yes | Idempotency hash |
+| isDemoData | boolean | no | True for seed data |
+| createdAt | timestamp | auto | Server timestamp |
+| updatedAt | timestamp | auto | Server timestamp |
+| assignedTo | string | no | Admin user ID |
+
+**Access Rules:** Public create (status=new, priority=normal, consent=true). Admin read/update/delete.
+
+**PII:** contactName, email, phone, companyName. Subject to retention policy.
+
+### Subcollection: `recommendationRequests/{requestId}/events`
+
+Same structure as feedback events. Immutable.
+
+---
+
+## Collection: `feedbackAggregates`
+
+Pre-computed counts for admin dashboard. Avoids unbounded reads.
+
+**Access Rules:** Admin read/write only.
+
+---
+
+## Collection: `feedbackSettings`
+
+Configurable feedback settings (e.g., enabled types, notification preferences).
+
+**Access Rules:** Admin read/write only.
+
+---
+
 ## Data Retention
 
 | Collection | Retention | Notes |
@@ -357,3 +482,7 @@ Supported delivery regions.
 | conversations/messages | 1 year | PII, redact after retention |
 | webhookEvents | 90 days | Diagnostic data |
 | auditLogs | 7 years | Compliance, never delete |
+| feedbackSubmissions | 3 years | PII redaction on request |
+| recommendationRequests | 3 years | PII redaction on request |
+| feedbackAggregates | Indefinite | No PII |
+| feedbackSettings | Indefinite | Configuration only |

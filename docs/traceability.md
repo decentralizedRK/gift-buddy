@@ -90,6 +90,28 @@ This matrix maps requirements from the product specification to their implementa
 | SC-005 | Audit logging (admin actions) | Planned | `src/domain/audit.ts` | -- |
 | SC-006 | Webhook authenticity verification | Planned | WhatsApp integration | -- |
 
+## Customer Feedback and Insights Requirements (FEATURE-001)
+
+| ID | Requirement | Status | Source Files | Tests |
+|----|------------|--------|-------------|-------|
+| FB-001 | Public feedback form | Implemented | `src/app/(storefront)/feedback/` | -- |
+| FB-002 | Product-specific feedback | Implemented | `src/app/(storefront)/products/[slug]/page.tsx` | -- |
+| FB-003 | Gift finder form | Implemented | `src/app/(storefront)/gift-finder/` | -- |
+| FB-004 | Rule-based gift matching | Tested | `src/domain/gift-matcher.ts` | `tests/unit/domain/gift-matcher.test.ts` |
+| FB-005 | Feedback domain models | Tested | `src/domain/feedback.ts` | `tests/unit/domain/feedback.test.ts` |
+| FB-006 | Feedback status lifecycle | Tested | `src/domain/feedback.ts` | `tests/unit/domain/feedback.test.ts` |
+| FB-007 | Anonymous submissions | Tested | `src/domain/feedback.ts` | `tests/unit/domain/feedback.test.ts` |
+| FB-008 | Contact consent handling | Tested | `src/domain/feedback.ts` | `tests/unit/domain/feedback.test.ts` |
+| FB-009 | Honeypot spam prevention | Implemented | Feedback form components | -- |
+| FB-010 | Idempotency keys | Tested | `src/domain/reference.ts` | `tests/unit/domain/reference.test.ts` |
+| FB-011 | Admin feedback list | Implemented | `src/app/admin/feedback/page.tsx` | -- |
+| FB-012 | Admin feedback detail | Implemented | `src/app/admin/feedback/[id]/page.tsx` | -- |
+| FB-013 | Admin dashboard widgets | Implemented | `src/app/admin/dashboard/page.tsx` | -- |
+| FB-014 | CSV export with safety | Tested | `src/domain/feedback.ts` | `tests/unit/domain/feedback.test.ts` |
+| FB-015 | Firestore Security Rules | Implemented | `firebase/firestore.rules` | -- |
+| FB-016 | Seed data (feedback) | Implemented | `src/data/seed-feedback.ts` | -- |
+| FB-017 | Seed data (recommendations) | Implemented | `src/data/seed-feedback.ts` | -- |
+
 ## Documentation Requirements
 
 | ID | Document | Status | Path |

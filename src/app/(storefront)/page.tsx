@@ -213,6 +213,57 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Help Us Improve */}
+      <section className="py-16 md:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              Help Us Improve
+            </h2>
+            <p className="mt-3 text-muted-foreground text-lg max-w-2xl mx-auto">
+              Your feedback shapes the future of {APP_NAME}. Share ideas, suggest new
+              hampers, or let us help you find the perfect gift.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+            <Link
+              href="/feedback"
+              className="group rounded-xl border border-border bg-background p-6 hover:shadow-lg transition-shadow text-center"
+            >
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 text-primary mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 0 1 1.037-.443 48.282 48.282 0 0 0 5.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+                Share Feedback
+              </h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Tell us what you think about our products, packaging, or service. Every
+                suggestion helps us grow.
+              </p>
+            </Link>
+            <Link
+              href="/gift-finder"
+              className="group rounded-xl border border-border bg-background p-6 hover:shadow-lg transition-shadow text-center"
+            >
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 text-primary mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+                Gift Finder
+              </h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Not sure what to choose? Tell us about your occasion and budget, and
+                we will recommend the perfect hamper.
+              </p>
+            </Link>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { seedProducts } from '@/data/seed-products';
-import { formatPrice, formatDate } from '@/lib/format';
+import { seedFeedback } from '@/data/seed-feedback';
+import { seedRecommendationRequests } from '@/data/seed-feedback';
+import { formatPrice, formatDate, truncate } from '@/lib/format';
 import type { OrderStatus } from '@/domain/order';
 
 export const metadata = {
@@ -8,6 +10,11 @@ export const metadata = {
 };
 
 /* Demo data ---------------------------------------------------------------- */
+
+const newFeedbackCount = seedFeedback.filter((fb) => fb.status === 'new').length;
+const pendingRecommendationsCount = seedRecommendationRequests.filter(
+  (r) => r.status === 'new' || r.status === 'under_review'
+).length;
 
 const SUMMARY_CARDS = [
   {
@@ -33,6 +40,18 @@ const SUMMARY_CARDS = [
     value: '28',
     change: '+4 this month',
     color: 'bg-secondary text-secondary-foreground',
+  },
+  {
+    label: 'New Feedback',
+    value: newFeedbackCount.toString(),
+    change: 'Awaiting triage',
+    color: 'bg-blue-100 text-blue-800',
+  },
+  {
+    label: 'Pending Recommendations',
+    value: pendingRecommendationsCount.toString(),
+    change: 'Need response',
+    color: 'bg-orange-100 text-orange-800',
   },
 ];
 
@@ -114,6 +133,20 @@ const STATUS_STYLES: Record<string, string> = {
   delivery_failed: 'bg-red-100 text-red-800',
 };
 
+const FEEDBACK_STATUS_STYLES: Record<string, string> = {
+  new: 'bg-blue-100 text-blue-800',
+  triaged: 'bg-yellow-100 text-yellow-800',
+  under_review: 'bg-orange-100 text-orange-800',
+  planned: 'bg-purple-100 text-purple-800',
+  accepted: 'bg-green-100 text-green-800',
+  implemented: 'bg-green-100 text-green-800',
+  responded: 'bg-teal-100 text-teal-800',
+  closed: 'bg-gray-100 text-gray-600',
+  duplicate: 'bg-gray-100 text-gray-600',
+  rejected: 'bg-red-100 text-red-800',
+  spam: 'bg-red-100 text-red-800',
+};
+
 function statusLabel(status: string): string {
   return status
     .split('_')
@@ -150,7 +183,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {SUMMARY_CARDS.map((card) => (
           <div
             key={card.label}
@@ -224,6 +257,62 @@ export default function DashboardPage() {
                   </td>
                 </tr>
               ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Recent feedback */}
+      <div className="rounded-xl border border-border bg-background">
+        <div className="flex items-center justify-between border-b border-border px-5 py-4">
+          <h2 className="text-lg font-semibold text-foreground">Recent Feedback</h2>
+          <Link
+            href="/admin/feedback"
+            className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+          >
+            View all
+          </Link>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-left">
+                <th className="px-5 py-3 font-medium text-muted-foreground">Reference</th>
+                <th className="px-5 py-3 font-medium text-muted-foreground">Title</th>
+                <th className="px-5 py-3 font-medium text-muted-foreground">Status</th>
+                <th className="px-5 py-3 font-medium text-muted-foreground">
+                  <span className="sr-only">Actions</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {[...seedFeedback]
+                .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+                .slice(0, 5)
+                .map((fb) => (
+                  <tr key={fb.id} className="border-b border-border last:border-0 hover:bg-muted/50">
+                    <td className="px-5 py-3 font-mono text-xs">{fb.publicReference}</td>
+                    <td className="px-5 py-3 text-foreground" title={fb.title}>
+                      {truncate(fb.title, 40)}
+                    </td>
+                    <td className="px-5 py-3">
+                      <span
+                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${FEEDBACK_STATUS_STYLES[fb.status] ?? 'bg-muted text-muted-foreground'}`}
+                      >
+                        {statusLabel(fb.status)}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3">
+                      <Link
+                        href={`/admin/feedback/${fb.id}`}
+                        className="text-primary hover:text-primary/80 text-xs font-medium transition-colors"
+                      >
+                        View
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

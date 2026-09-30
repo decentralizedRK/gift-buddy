@@ -81,9 +81,34 @@ service cloud.firestore {
 - API routes that accept mutations verify the `Origin` header
 - SameSite cookie attribute set on auth cookies
 
+## Feedback Security
+
+### Public Feedback Submissions
+- No authentication required for general feedback.
+- Honeypot field to detect bots (hidden field, `aria-hidden`, `tabIndex=-1`).
+- Idempotency key prevents duplicate submissions.
+- Public create limited to allowed fields only (Security Rules enforce allowlist).
+- Status, priority, and sentiment cannot be set by public clients (enforced to `new`, `normal`, `not_classified`).
+- Consent required when contact is requested.
+- Maximum field lengths enforced by Zod validation.
+
+### Admin Feedback Access
+- All feedback data access requires `admin: true` custom claim.
+- Feedback events (audit trail) are append-only — no update or delete.
+- CSV export sanitizes against formula injection (`=`, `+`, `-`, `@` prefixed with `'`).
+- CSV excludes phone numbers, idempotency keys, and internal metadata.
+- All admin status changes recorded in immutable events subcollection.
+
+### Privacy
+- Anonymous submissions store no PII.
+- Contact details stored only when customer provides them.
+- Feedback not displayed publicly.
+- Admin-only internal notes never exposed to customers.
+
 ## Rate Limiting
 
 - Public inquiry submission: rate limited per IP (configurable, default 5/minute)
+- Public feedback submission: rate limited per IP (configurable, default 5/minute)
 - Order tracking lookups: rate limited per IP (configurable, default 10/minute)
 - Admin operations: rate limited per authenticated user
 - Implementation via middleware or API route guards
@@ -138,6 +163,8 @@ All security-relevant actions are recorded in the `auditLogs` collection:
 - Order state transitions
 - Customer data access
 - Settings changes
+- Feedback status changes, priority updates, notes
+- Feedback CSV exports
 - Failed authentication attempts
 - Webhook verification failures
 
