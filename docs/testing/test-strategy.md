@@ -31,6 +31,13 @@ Gift Buddy uses a test pyramid approach with Vitest for unit/component tests, Fi
 - Retry classification (transient vs permanent failure)
 - Zod schema validation (valid/invalid inputs)
 - Date and currency formatting
+- Feedback type, status, priority, category, sentiment validation
+- Feedback status transition validation (VALID_FEEDBACK_TRANSITIONS)
+- Anonymous submission consent logic
+- Rating validation (1-5 range, optional)
+- CSV formula-injection protection (sanitizeCsvValue)
+- Gift matcher scoring, filtering, sorting, and edge cases
+- Budget range boundary matching
 
 **Location**: `src/**/*.test.ts` alongside source files.
 

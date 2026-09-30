@@ -12,6 +12,7 @@ const footerLinks = {
     { name: 'Contact', href: '/contact' },
     { name: 'FAQ', href: '/faq' },
     { name: 'Track Order', href: '/track' },
+    { name: 'Share Feedback', href: '/feedback' },
   ],
   policies: [
     { name: 'Privacy Policy', href: '/privacy' },
