@@ -1,8 +1,10 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCart } from '@/lib/cart-store';
 import { formatPrice } from '@/lib/format';
+import { imagePath } from '@/lib/image-path';
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart, totalItems, subtotal } =
@@ -73,23 +75,22 @@ export default function CartPage() {
               key={key}
               className="flex flex-col sm:flex-row gap-4 p-4 sm:p-6"
             >
-              {/* Product image placeholder */}
-              <div className="flex-shrink-0 h-24 w-24 rounded-lg bg-muted flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1}
-                  stroke="currentColor"
-                  className="w-10 h-10 text-muted-foreground/40"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"
+              <div className="flex-shrink-0 h-24 w-24 rounded-lg bg-muted relative overflow-hidden">
+                {item.image ? (
+                  <Image
+                    src={imagePath(item.image)}
+                    alt={item.productTitle}
+                    fill
+                    className="object-cover"
+                    sizes="96px"
                   />
-                </svg>
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-10 h-10 text-muted-foreground/40" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+                    </svg>
+                  </div>
+                )}
               </div>
 
               {/* Item details */}

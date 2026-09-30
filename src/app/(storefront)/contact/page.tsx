@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { APP_NAME } from '@/lib/constants';
+import { ContactForm } from './contact-form';
 
 export const metadata: Metadata = {
   title: 'Contact Us',
@@ -23,104 +23,7 @@ export default function ContactPage() {
         {/* Contact Form */}
         <div>
           <h2 className="text-xl font-semibold text-foreground mb-6">Send Us a Message</h2>
-          <form className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-foreground mb-1.5">
-                  Full Name <span className="text-destructive">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  required
-                  className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
-                  placeholder="Your name"
-                />
-              </div>
-              <div>
-                <label htmlFor="company" className="block text-sm font-medium text-foreground mb-1.5">
-                  Company Name
-                </label>
-                <input
-                  type="text"
-                  id="company"
-                  name="company"
-                  className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
-                  placeholder="Your company"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1.5">
-                  Email <span className="text-destructive">*</span>
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
-                  placeholder="you@company.com"
-                />
-              </div>
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-1.5">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
-                  placeholder="+91 98765 43210"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-1.5">
-                Subject <span className="text-destructive">*</span>
-              </label>
-              <select
-                id="subject"
-                name="subject"
-                required
-                className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
-              >
-                <option value="">Select a topic</option>
-                <option value="bulk-order">Bulk / Corporate Order Inquiry</option>
-                <option value="custom-hamper">Custom Hamper Request</option>
-                <option value="order-status">Order Status</option>
-                <option value="general">General Question</option>
-                <option value="feedback">Feedback</option>
-                <option value="partnership">Partnership Opportunity</option>
-              </select>
-            </div>
-
-            <div>
-              <label htmlFor="message" className="block text-sm font-medium text-foreground mb-1.5">
-                Message <span className="text-destructive">*</span>
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                required
-                rows={5}
-                className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-y"
-                placeholder="Tell us about your requirements, team size, budget, and any specific preferences..."
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full sm:w-auto px-8 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
-            >
-              Send Message
-            </button>
-          </form>
+          <ContactForm />
         </div>
 
         {/* Contact Info */}

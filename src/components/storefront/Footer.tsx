@@ -19,6 +19,7 @@ const footerLinks = {
     { name: 'Terms of Service', href: '/terms' },
     { name: 'Cancellation & Refund', href: '/cancellation-policy' },
     { name: 'Delivery Info', href: '/delivery-info' },
+    { name: 'WhatsApp Consent', href: '/whatsapp-consent' },
   ],
 };
 

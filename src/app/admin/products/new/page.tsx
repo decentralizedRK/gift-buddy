@@ -183,8 +183,6 @@ export function ProductForm({
 
     setSaving(true);
     // TODO: Save to Firestore
-    // eslint-disable-next-line no-console
-    console.log('Saving product:', { ...form, status: publishStatus, variants });
     setTimeout(() => setSaving(false), 1000);
   }
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useProducts } from '@/hooks/use-data';
 import { ProductCard } from '@/components/storefront/ProductCard';
@@ -62,6 +63,7 @@ export function SearchContent() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by name, occasion, tags..."
+            aria-label="Search products"
             className="w-full pl-12 pr-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-lg"
             autoFocus
           />
@@ -102,9 +104,9 @@ export function SearchContent() {
               </p>
               <p className="mt-2 text-sm text-muted-foreground">
                 Try different keywords or browse our{' '}
-                <a href="/products" className="text-primary hover:text-primary/80 transition-colors">
+                <Link href="/products" className="text-primary hover:text-primary/80 transition-colors">
                   full catalog
-                </a>
+                </Link>
                 .
               </p>
             </div>

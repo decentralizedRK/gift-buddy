@@ -291,7 +291,7 @@ export default function DashboardContent() {
             </thead>
             <tbody>
               {[...feedbackItems]
-                .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+                .sort((a, b) => new Date(b.createdAt as unknown as string).getTime() - new Date(a.createdAt as unknown as string).getTime())
                 .slice(0, 5)
                 .map((fb) => (
                   <tr key={fb.id} className="border-b border-border last:border-0 hover:bg-muted/50">

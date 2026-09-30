@@ -36,6 +36,7 @@ function useFirestoreCollection<T>(
     async function fetchData() {
       try {
         const { db } = await import('@/lib/firebase-client');
+        if (!db) throw new Error('Firebase not configured');
         const { collection, getDocs } = await import('firebase/firestore');
         const snapshot = await getDocs(collection(db, collectionName));
         if (!cancelled) {
