@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { formatPrice } from '@/lib/format';
+import { useCart } from '@/lib/cart-store';
 
 interface Variant {
   id: string;
@@ -12,21 +14,52 @@ interface Variant {
 }
 
 interface ProductDetailClientProps {
+  productId: string;
+  productTitle: string;
+  slug: string;
+  image: string | null;
   variants: Variant[];
   stockStatus: string;
   moq: number;
 }
 
 export function ProductDetailClient({
+  productId,
+  productTitle,
+  slug,
+  image,
   variants,
   stockStatus,
   moq,
 }: ProductDetailClientProps) {
+  const router = useRouter();
+  const { addItem } = useCart();
   const [selectedVariant, setSelectedVariant] = useState(variants[0]?.id ?? '');
   const [quantity, setQuantity] = useState(moq);
+  const [added, setAdded] = useState(false);
 
   const currentVariant = variants.find((v) => v.id === selectedVariant) ?? variants[0];
   const isOutOfStock = stockStatus === 'out_of_stock';
+
+  function handleAddToCart() {
+    addItem({
+      productId,
+      productTitle,
+      slug,
+      variantId: currentVariant?.id ?? null,
+      variantName: currentVariant?.name ?? null,
+      unitPrice: currentVariant?.price ?? 0,
+      image,
+      quantity,
+    });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  }
+
+  function handleRequestQuote() {
+    handleAddToCart();
+    router.push('/inquiry');
+  }
 
   return (
     <div className="mt-8 space-y-6">
@@ -108,13 +141,16 @@ export function ProductDetailClient({
         <button
           type="button"
           disabled={isOutOfStock}
+          onClick={handleAddToCart}
           className="flex-1 px-8 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+          {isOutOfStock ? 'Out of Stock' : added ? 'Added!' : 'Add to Cart'}
         </button>
         <button
           type="button"
-          className="px-8 py-3 rounded-lg border-2 border-primary text-primary font-semibold hover:bg-primary/5 transition-colors"
+          disabled={isOutOfStock}
+          onClick={handleRequestQuote}
+          className="px-8 py-3 rounded-lg border-2 border-primary text-primary font-semibold hover:bg-primary/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Request Quote
         </button>

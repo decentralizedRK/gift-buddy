@@ -132,6 +132,10 @@ export default function ProductDetailContent({ params }: { params: Promise<{ slu
           </div>
 
           <ProductDetailClient
+            productId={product.id}
+            productTitle={product.title}
+            slug={product.slug}
+            image={product.images[0]?.url ?? null}
             variants={product.variants}
             stockStatus={product.stockStatus}
             moq={product.moq}
