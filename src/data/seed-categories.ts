@@ -1,0 +1,67 @@
+export const seedCategories = [
+  {
+    id: 'cat_corporate_gifting',
+    slug: 'corporate-gifting',
+    name: 'Corporate Gifting',
+    description:
+      'Thoughtfully curated gift hampers for employee onboarding, team rewards, and professional occasions.',
+    image: '/images/categories/corporate-gifting.jpg',
+    displayOrder: 1,
+    status: 'active' as const,
+    productCount: 0,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z',
+  },
+  {
+    id: 'cat_festival_seasonal',
+    slug: 'festival-seasonal',
+    name: 'Festival & Seasonal',
+    description:
+      'Festive hampers for Diwali, year-end celebrations, and seasonal occasions that bring teams together.',
+    image: '/images/categories/festival-seasonal.jpg',
+    displayOrder: 2,
+    status: 'active' as const,
+    productCount: 0,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z',
+  },
+  {
+    id: 'cat_wellness_self_care',
+    slug: 'wellness-self-care',
+    name: 'Wellness & Self-Care',
+    description:
+      'Self-care and well-being hampers that promote relaxation, mindfulness, and a healthy work-life balance.',
+    image: '/images/categories/wellness-self-care.jpg',
+    displayOrder: 3,
+    status: 'active' as const,
+    productCount: 0,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z',
+  },
+  {
+    id: 'cat_gourmet_food',
+    slug: 'gourmet-food',
+    name: 'Gourmet & Food',
+    description:
+      'Artisanal food and beverage collections featuring handpicked Indian specialties and international delicacies.',
+    image: '/images/categories/gourmet-food.jpg',
+    displayOrder: 4,
+    status: 'active' as const,
+    productCount: 0,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z',
+  },
+  {
+    id: 'cat_employee_recognition',
+    slug: 'employee-recognition',
+    name: 'Employee Recognition',
+    description:
+      'Premium gifts to honour achievements, milestones, and the contributions of valued team members and leaders.',
+    image: '/images/categories/employee-recognition.jpg',
+    displayOrder: 5,
+    status: 'active' as const,
+    productCount: 0,
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z',
+  },
+];
